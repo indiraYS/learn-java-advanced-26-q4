@@ -1,0 +1,43 @@
+# ===================================================================
+# SHARED configuration - applies to every profile.
+#
+# Environment-specific settings (datasource, pool, logging, issuer)
+# live in application-{local,dev,stg,prod}.yml and override what is
+# defined here.
+#
+# The active profile is selected at runtime via spring.profiles.active.
+# If nothing is set, `local` is used (see spring.profiles.default).
+# ===================================================================
+spring:
+  application:
+    name: learn
+
+  profiles:
+    default: local
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Schema is owned by Flyway; Hibernate only verifies it matches the entities.
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    indira.yessimova.learn: INFO

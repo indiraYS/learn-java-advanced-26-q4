@@ -1,0 +1,42 @@
+# ===================================================================
+# PROD - production.
+# Everything environment-supplied, nothing verbose, no destructive
+# Flyway operations, no H2 console.
+# ===================================================================
+spring:
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      pool-name: learn-pool-prod
+      maximum-pool-size: 30
+      minimum-idle: 10
+      connection-timeout: 30000
+      max-lifetime: 1800000
+      keepalive-time: 300000
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+
+  flyway:
+    baseline-on-migrate: false
+    clean-disabled: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH_ISSUER_URI}
+
+server:
+  error:
+    include-message: never
+    include-stacktrace: never
+
+logging:
+  level:
+    root: WARN
+    indira.yessimova.learn: INFO
